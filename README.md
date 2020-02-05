@@ -1,7 +1,18 @@
-# snippets
-
-"action thunk": {
-		"prefix": "z-rxthunk",
+{
+	"comment": {
+		"prefix": "z-comment",
+		"body": [
+			"/**",
+			" * functional react component for ...",
+			" * @function",
+			" * @param {*} props - props",
+			" * @returns {JSX.Element} - react component",
+			" */"
+		],
+		"description": "comment"
+	},
+	"action thunk": {
+		"prefix": "z-redux-thunk-timeout",
 		"body": [
 			"export const actionName = payload => dispatch => {",
 			"  setTimeout(() => {",
@@ -11,8 +22,46 @@
 		],
 		"description": "action thunk"
 	},
+	"z-redux-actions-rest": {
+		"prefix": "z-redux-actions-rest",
+		"body": [
+			"export const getData = () => dispatch => {",
+			"  Axios.get('$1')",
+			"    .then(res => {",
+			"      if (res.statusText === 'OK') {",
+			"        dispatch(first(res)) // first it is action",
+			"      }",
+			"    })",
+			"    .catch(err => dispatch(handleError(err.message)))",
+			"      // handleeError it is action",
+			"}"
+		],
+		"description": "z-redux-actions-rest"
+	},
+	"z-redux-reducer": {
+		"prefix": "z-redux-reducer",
+		"body": [
+			"import { action } from '../actions'",
+			"",
+			"const initialState = {",
+			"",
+			"}",
+			"",
+			"export default (state = initialState, { type, payload }) => {",
+			"  switch (type) {",
+			"",
+			"  case action.$1:",
+			"    return { ...state, ...payload }",
+			"",
+			"  default:",
+			"    return state",
+			"  }",
+			"}"
+		],
+		"description": "z-redux-reducer"
+	},
 	"combine reducer": {
-		"prefix": "z-rxcombine",
+		"prefix": "z-redux-combine",
 		"body": [
 			"import { combineReducers } from 'redux'",
 			"",
@@ -24,8 +73,28 @@
 		],
 		"description": "combine reducer"
 	},
+	"z-redux-provider": {
+		"prefix": "z-redux-provider",
+		"body": [
+			"import React from 'react'",
+			"import ReactDOM from 'react-dom'",
+			"import { Provider } from 'react-redux'",
+			"",
+			"import App from './App'",
+			"import { store } from './store'",
+			"",
+			"const app = (",
+			"  <Provider store={ store }>",
+			"    <App />",
+			"  </Provider>",
+			")",
+			"",
+			"ReactDOM.render(app, document.getElementById('root'))"
+		],
+		"description": "z-redux-provider"
+	},
 	"redux store": {
-		"prefix": "z-rxstore",
+		"prefix": "z-redux-store",
 		"body": [
 			"import { createStore, applyMiddleware, compose } from 'redux'",
 			"import reduxThunk from 'redux-thunk'",
@@ -71,9 +140,8 @@
 			" * @function",
 			" * @param {*} props - props",
 			" * @returns {JSX.Element} - react component",
-			" * @useIn - ./",
 			" */",
-			"function $1({ ex }) {",
+			"function $1({ $2 }) {",
 			"  return (",
 			"    <div>",
 			"      ",
@@ -99,9 +167,8 @@
 			" * @function",
 			" * @param {*} props - props",
 			" * @returns {JSX.Element} - react component",
-			" * @useIn - ./",
 			" */",
-			"function $1({ ex }) {",
+			"function $1({ $2 }) {",
 			"  return (",
 			"    <div>",
 			"      ",
@@ -125,7 +192,6 @@
 			" * @function",
 			" * @param {*} props - props",
 			" * @returns {JSX.Element} - react component",
-			" * @useIn - ./",
 			" */",
 			"function $1({ $2 }) {",
 			"  return (",
@@ -343,6 +409,18 @@
 		],
 		"description": "z-test-integration"
 	},
+	"z-test-snapshot": {
+		"prefix": "z-test-snapshot",
+		"body": [
+			"import renderer from 'react-test-renderer'",
+			"test('snapshot renders', () => {",
+			"    const component = renderer.create(<App />)",
+			"    let tree = component.toJSON()",
+			"    expect(tree).toMatchSnapshot()",
+			"})"
+		],
+		"description": "z-test-snapshot"
+	},
 	"z-func-comp": {
 		"prefix": "z-func-comp",
 		"body": [
@@ -353,4 +431,68 @@
 			"}"
 		],
 		"description": "z-func-comp"
+	},
+	"z-redux-ducks": {
+		"prefix": "z-redux-ducks",
+		"body": [
+			"import { createSelector } from 'reselect'",
+			"",
+			"// Actions",
+			"const action = {",
+			"  ADD: 'ADD'",
+			"}",
+			"",
+			"// Reducer",
+			"const initialState = {",
+			"  counter: 11",
+			"}",
+			"",
+			"export default (state = initialState, { type, payload }) => {",
+			"  switch (type) {",
+			"",
+			"  case action.ADD:",
+			"    return {",
+			"      ...state,",
+			"      counter: state.counter + payload",
+			"    }",
+			"",
+			"  default:",
+			"    return state",
+			"  }",
+			"}",
+			"",
+			"// Action Creators",
+			"export const add = num => ({",
+			"  type: action.ADD,",
+			"  payload: num",
+			"})",
+			"",
+			"// side effects",
+			"export const actionName = payload => dispatch => {",
+			"  setTimeout(() => {",
+			"    dispatch(add(payload))",
+			"  }, 400)",
+			"}",
+			"",
+			"// Selectors",
+			"export const counter = createSelector(",
+			"  state => state.counter.counter,",
+			"  counter => counter + ' $$'",
+			")"
+		],
+		"description": "z-redux-ducks"
 	}
+	// Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+}
